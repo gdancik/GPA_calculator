@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!--
+      This is the page head - it contains info the browser uses to display the page
+      You won't see what's in the head in the page
+      Scroll down to the body element for the page content
+    -->
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+
+    <!-- 
+      This is an HTML comment
+      You can write text in a comment and the content won't be visible in the page
+    -->
+
+    <title>GPA Calculator</title>
+
+    <!-- Meta tags for SEO and social sharing -->
+    
+    <!-- Import the webpage's stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+
+  
+    
+  </head>
+  <body>
+    <!--
+      This is the body of the page
+      Look at the elements and see how they appear in the rendered page on the right
+      Each element is defined using tags, with < and > indicating where each one opens and closes
+      There are elements for sections of the page, images, text, and more
+      The elements include attributes referenced in the CSS for the page style
+    -->
+
+    <!-- The wrapper and content divs set margins and positioning -->
+    <div class="wrapper">
+      <div class="content" role="main">
+        <!-- This is the start of content for our page -->
+        <h1 class="title"></h1>
+
+                <!-- Instructions on using this project -->
+        <div class="instructions">
+          <h2>See how your remaining classes will effect your GPA
+          </h2>
+  
+          <form id = 'myForm' onsubmit = 'calculate();'>
+                                
+          <div>
+            <label for='cgpa'>Current GPA: </label>
+            <input type = 'number' id = 'cgpa' step =.01 required
+                   onchange = 'hideResult();'>
+          </div>
+          
+          <div>
+            <label for='cn'>Number of courses completed: </label>
+            <input type = 'number' id = 'cn' min = '1' max = '20' required
+                   onchange = 'hideResult();'>
+          
+          </div>
+          
+          <div>
+            <label for='rn'>Number of courses remaining: </label>
+            <input type = 'number' id = 'rn' min = '1' max = '20' required
+                   onchange = 'hideResult();'>
+          </div>
+            </br>
+          <div>
+              <label></label>
+              <input type = 'submit' value = 'Submit'>
+              <input type = 'reset'>          
+          </div>          
+        </form>
+        </br>
+      
+      <div id = 'result' style = 'display:none'>
+        
+        If you receive an ___ average in your remaining courses, your average GPA will be ___.
+        
+        <ul>
+          <li>A-, A:  <span id = 'res_A'></span></li>
+          <li>B-, B, B+:  <span id = 'res_B'></span></li>
+          <li>C-, C, C+:  <span id = 'res_C'></span></li>
+        </ul>
+      <hr>
+      
+      
+      </div>
+    </div>
+  
+    <!-- The footer holds our remix button — you can use it for structure or cut it out ✂ -->
+    <footer class="footer">
+    
+      Using style sheet provided by 
+      <a href = "https://glitch.com/">https://glitch.com</a>
+              
+    </footer>
+    
+    
+    <script>
+      
+      let result = {'A': 0, 'B': 0, 'C':0};
+      
+      var form = document.getElementById("myForm");
+      function handleForm(event) { event.preventDefault(); } 
+      form.addEventListener('submit', handleForm);
+      
+      calculate = function() {
+                
+        let cgpa = document.getElementById('cgpa').value;
+        let cn = document.getElementById('cn').value;
+        let rn = document.getElementById('rn').value;
+  
+        cgpa = parseFloat(cgpa);
+        cn = parseInt(cn);
+        rn = parseInt(rn);
+        
+        alert(cgpa + ':' + cn + ':' + rn);
+        
+        function f(cgpa, cn, rgpa, rn) {        
+          let res = (cgpa*cn + rgpa*rn) / (cn + rn);
+          return res.toFixed(3);
+        }
+        
+        result.A = [f(cgpa, cn, 3.7, rn), f(cgpa, cn, 4, rn)]
+        result.B = [f(cgpa, cn, 2.7, rn), f(cgpa, cn, 3, rn), f(cgpa, cn, 3.3, rn)];
+        result.C = [f(cgpa, cn, 1.7, rn), f(cgpa, cn, 2, rn), f(cgpa, cn, 2.3, rn)];
+        
+        for (grade in result) { 
+          document.getElementById('res_' +grade).innerText = result[grade].join(', ');
+      
+        }
+        
+        document.getElementById('result').style.display = 'block';
+        
+      }
+
+      
+      function hideResult() {
+         document.getElementById('result').style.display = 'none'; 
+      }
+      
+    
+    </script>
+  </body>
+</html>
